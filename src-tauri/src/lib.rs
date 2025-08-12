@@ -1,5 +1,7 @@
 use std::sync::Mutex;
 use tauri::Manager;
+use crate::commands::hello::greet;
+use crate::core::desktop::tray::tray::create_system_tray;
 
 mod commands;
 mod core;
@@ -7,18 +9,15 @@ mod models;
 mod plugins;
 mod utils;
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         // 使用设置挂钩执行与设置相关的任务
         // 在主循环之前运行，因此尚未创建任何窗口
         .setup(|app| {
+            #[cfg(desktop)]
+            create_system_tray(app);
+
             // 创建一个自动启动插件，在系统启动时自动启动您的应用程序
             // 具体使用请参考 https://v2.tauri.org.cn/plugin/autostart/
             #[cfg(desktop)]
@@ -68,14 +67,12 @@ pub fn run() {
             // 添加二维码扫描插件，允许您的移动应用程序使用相机扫描二维码、EAN-13 和其他类型的条形码。
             // 具体使用请参考 https://v2.tauri.org.cn/plugin/barcode-scanner/
             #[cfg(mobile)]
-            app.handle()
-                .plugin(tauri_plugin_barcode_scanner::init())
-                .expect("TODO: panic message");
+            app.handle().plugin(tauri_plugin_barcode_scanner::init()).expect("TODO: panic message");
 
             // 添加生物识别插件，允许您的移动应用程序使用生物识别进行身份验证。例如：指纹、人脸、声纹等
             // 具体使用请参考 https://v2.tauri.org.cn/plugin/biometric/
-            #[cfg(mobile)]
-            app.handle().plugin(tauri_plugin_biometric::Builder::new().build());
+            // #[cfg(mobile)]
+            // app.handle().plugin(tauri_plugin_biometric::Builder::new().build());
 
             // 钩子期望一个 Ok 结果
             Ok(())

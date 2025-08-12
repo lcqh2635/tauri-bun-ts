@@ -2,7 +2,7 @@
 // https://v2.tauri.org.cn/learn/system-tray/
 
 #[cfg(desktop)]
-mod tray {
+pub mod tray {
     use tauri::image::Image;
     use tauri::menu::{
         CheckMenuItem, CheckMenuItemBuilder, IconMenuItem, Menu, MenuBuilder, MenuItem,
@@ -85,7 +85,7 @@ mod tray {
 
     /// 创建系统托盘菜单
     /// 想要定义和操作系统托盘中的菜单，请阅读 https://v2.tauri.org.cn/learn/window-menu/
-    pub fn create_tray_menu(app: &mut App) -> Menu<Wry> {
+    fn create_tray_menu(app: &mut App) -> Menu<Wry> {
         // 定义具体菜单项
 
         // 退出按钮
