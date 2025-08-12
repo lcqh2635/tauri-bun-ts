@@ -1,6 +1,6 @@
 // 认证相关API类型定义
 
-import type { BaseResponse } from '../../api/types.ts'
+// import type { BaseResponse } from '../../api/types.ts'
 
 /**
  * 登录请求参数

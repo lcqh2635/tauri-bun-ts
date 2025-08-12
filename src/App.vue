@@ -113,17 +113,33 @@ onMounted(async () => {
 
 
 
+// // 移动端扫码测试
+// import { scan, Format } from '@tauri-apps/plugin-barcode-scanner';
+// // 当使用 '“withGlobalTauri”： true' 时，您可以使用
+// // const { scan, Format } = window.__TAURI__.barcodeScanner;
+//
+// const barcode_scanner = async () => {
+//   // 'windowed： true' 实际上将 WebView 设置为透明，而不是为相机打开单独的视图
+//   // 确保您的用户界面已准备好使用透明元素显示下面的内容
+//   // 开始扫描。
+//   await scan(
+//       {
+//         // 创建一个窗口
+//         windowed: true,
+//         // 扫描二维码，还可以选择码，例如：扫描条形码
+//         formats: [Format.QRCode],
+//         // 使用后置摄像头
+//         cameraDirection: 'back'
+//       }
+//   ).then((response) => {
+//     console.log("扫描二维码成功，扫描结果为：" + response);
+//     alert('扫码失败或取消');
+//   }).catch((error) => {
+//     console.log("扫描二维码失败、错误：" + JSON.stringify(error));
+//     alert('扫码出错');
+//   });
+// }
 
-// 移动端扫码测试
-import { scan, Format } from '@tauri-apps/plugin-barcode-scanner';
-// 当使用 '“withGlobalTauri”： true' 时，您可以使用
-// const { scan, Format } = window.__TAURI__.barcodeScanner;
-
-const barcode_scanner = () => {
-  // 'windowed： true' 实际上将 WebView 设置为透明，而不是为相机打开单独的视图
-// 确保您的用户界面已准备好使用透明元素显示下面的内容
-  scan({ windowed: true, formats: [Format.QRCode] });
-}
 
 </script>
 
@@ -157,8 +173,10 @@ const barcode_scanner = () => {
       <button @click="open_file_dialog" class="mt-3 w-4">打开一个文件选择对话框</button>
       <button @click="save_file_dialog" class="mt-3 w-4">保存到文件对话框</button>
 
-      <button @click="barcode_scanner" class="mt-3 w-4">移动端扫码测试</button>
+<!--      <button @click="barcode_scanner" class="mt-3 w-4">移动端扫码测试</button>-->
     </div>
+
+    <barcode-scanner></barcode-scanner>
   </main>
 </template>
 

@@ -1,8 +1,10 @@
+#[cfg(desktop)]
 use std::sync::Mutex;
+#[cfg(desktop)]
 use tauri::Manager;
-use crate::commands::hello::greet;
 #[cfg(desktop)]
 use crate::core::desktop::tray::tray::create_system_tray;
+use crate::commands::hello::greet;
 
 mod commands;
 mod core;

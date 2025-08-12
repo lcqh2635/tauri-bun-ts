@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AvatarDropdown: typeof import('./../components/shared/AvatarDropdown.vue')['default']
+    BarcodeScanner: typeof import('./../components/BarcodeScanner.vue')['default']
     BaseButton: typeof import('./../components/BaseButton.vue')['default']
     BaseCard: typeof import('./../components/ui/cards/BaseCard.vue')['default']
     Demo: typeof import('./../components/shared/demo.vue')['default']

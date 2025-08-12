@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 import { moduleRoutes } from './modules'
-import { setupRouterGuards } from './guards'
+// import { setupRouterGuards } from './guards'
 
 /**
  * 创建路由实例
@@ -28,6 +28,6 @@ export function resetRouter() {
 }
 
 // 安装路由守卫
-setupRouterGuards(router)
+// setupRouterGuards(router)
 
 export default router

@@ -76,19 +76,19 @@ export const i18n = createI18n(i18nOptions)
 export type I18nLanguage = keyof typeof messages
 
 // 切换语言
-export function setI18nLanguage(lang: I18nLanguage) {
-    i18n.global.locale.value = lang
-    // 可以在这里添加 localStorage 保存用户语言偏好
-    localStorage.setItem('lang', lang)
-    // 设置 html 的 lang 属性
-    document.querySelector('html')?.setAttribute('lang', lang)
-}
-
-// 初始化语言
-export function initI18n() {
-    // 从 localStorage 或 navigator 中获取用户语言偏好
-    const savedLang = localStorage.getItem('lang')
-    const userLang = navigator.language.split('-')[0]
-    const defaultLang = savedLang || (Object.keys(messages).includes(userLang) ? userLang : 'en')
-    setI18nLanguage(defaultLang as I18nLanguage)
-}
+// export function setI18nLanguage(lang: I18nLanguage) {
+//     i18n.global.locale.value = lang
+//     // 可以在这里添加 localStorage 保存用户语言偏好
+//     localStorage.setItem('lang', lang)
+//     // 设置 html 的 lang 属性
+//     document.querySelector('html')?.setAttribute('lang', lang)
+// }
+//
+// // 初始化语言
+// export function initI18n() {
+//     // 从 localStorage 或 navigator 中获取用户语言偏好
+//     const savedLang = localStorage.getItem('lang')
+//     const userLang = navigator.language.split('-')[0]
+//     const defaultLang = savedLang || (Object.keys(messages).includes(userLang) ? userLang : 'en')
+//     setI18nLanguage(defaultLang as I18nLanguage)
+// }

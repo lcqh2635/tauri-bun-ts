@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { setupInterceptors } from './interceptors.ts'
+// import { setupInterceptors } from './interceptors.ts'
 
 /**
  * 创建Axios实例
@@ -18,7 +18,7 @@ export function createAxiosInstance(config?: AxiosRequestConfig): AxiosInstance 
     })
 
     // 设置拦截器
-    setupInterceptors(instance)
+    // setupInterceptors(instance)
 
     return instance
 }
