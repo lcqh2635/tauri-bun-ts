@@ -16,7 +16,6 @@ pub fn run() {
         // 使用设置挂钩执行与设置相关的任务
         // 在主循环之前运行，因此尚未创建任何窗口
         .setup(|app| {
-
             #[cfg(desktop)]
             // create_system_tray(app);
 
@@ -24,6 +23,7 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

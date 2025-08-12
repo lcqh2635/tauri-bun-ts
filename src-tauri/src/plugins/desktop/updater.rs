@@ -2,6 +2,4 @@
 // https://v2.tauri.org.cn/plugin/updater
 
 #[cfg(desktop)]
-mod updater {
-
-}
+mod updater {}

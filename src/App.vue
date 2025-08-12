@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import {ask, confirm, message, open, save} from '@tauri-apps/plugin-dialog';
 
 const greetMsg = ref("");
 const name = ref("");
@@ -9,6 +10,105 @@ async function greet() {
   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
   greetMsg.value = await invoke("greet", { name: name.value });
 }
+
+// 对话框的使用参考 https://tauri.app/zh-cn/plugin/dialog/
+// https://v2.tauri.org.cn/reference/javascript/dialog/
+
+// 创建 Yes/No 中文为 是/否 对话框
+const answer_dialog = async () => {
+  // 创建 Yes/No 对话框
+  const answer = await ask('此作无法恢复。是否确定?', {
+    title: 'Tauri',
+    kind: 'warning',
+  });
+
+  // 将布尔值打印到控制台
+  console.log(answer);
+
+  if (answer) {
+    // 根据用户的选择执行不同的操作
+    alert('You clicked Yes!');
+  }
+}
+
+// 创建 Ok/Cancel 中文为 取消/确定 对话框
+async function confirmation_dialog() {
+// 创建确认确定/取消对话框
+  const confirmation = await confirm(
+      '此作无法恢复。是否确定?',
+      { title: 'Tauri', kind: 'warning' }
+  );
+
+  // 将布尔值打印到控制台
+  console.log(confirmation);
+}
+
+// 创建 Message 对话框
+async function message_dialog() {
+  // 显示消息
+  await message('此作无法恢复。是否确定?', { title: 'Tauri', kind: 'info' });
+  await message('找不到文件', { title: 'Tauri', kind: 'error' });
+  await message('此作无法恢复。是否确定?', { title: 'Tauri', kind: 'warning' });
+}
+
+// 打开一个文件选择对话框
+async function open_file_dialog() {
+// Open a dialog
+  const file = await open({
+    multiple: false,
+    directory: false,
+  });
+
+  // 将文件路径和名称打印到控制台
+  console.log(file);
+}
+
+// 保存到文件对话框
+async function save_file_dialog() {
+// 提示保存带有扩展名 .png 或 .jpeg 的 “我的过滤器”
+  const path = await save({
+    filters: [
+      {
+        name: 'My Filter',
+        extensions: ['png', 'jpeg'],
+      },
+    ],
+  });
+
+  // 打印所选路径
+  console.log(path);
+}
+
+
+
+// 你现在应该会看到一个启动画面窗口弹出，前端和后端将各自执行耗时 3 秒的初始化任务，完成后启动画面会消失，并显示主窗口
+// 参考 https://v2.tauri.org.cn/learn/splashscreen/
+
+// 在 TypeScript 中实现的一个 sleep 函数
+// Promise 是 JavaScript 中用于处理异步操作的一种核心机制，它的出现极大地改善了过去“回调地狱”（Callback Hell）的问题，使异步代码更清晰、可读、易于管理。
+// 这样就可以使用 .then、.catch、.finally 等方法来处理异步操作的结果。
+const sleep = (seconds: number): Promise<void> => {
+  return new Promise(resolve => {
+    console.log('使用 setTimeout 模拟执行一个很重的前端设置任务...');
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+// 设置函数
+async function setup() {
+  // 模拟执行一个很重的前端设置任务
+  console.log('执行非常繁重的前端设置任务...')
+  await sleep(3);
+  console.log('前端设置任务完成!')
+  // 设置前端任务为完成
+  await invoke('set_complete', {task: 'frontend'})
+}
+
+onMounted(async () => {
+  // 组件的模板已经被渲染到 DOM 中
+  console.log('组件已挂载，DOM 可访问')
+  await setup()
+})
 </script>
 
 <template>
@@ -33,10 +133,18 @@ async function greet() {
       <button type="submit">Greet</button>
     </form>
     <p>{{ greetMsg }}</p>
+
+    <div class="grid grid-cols-4 gap-3">
+      <button @click="answer_dialog" class="mt-3 w-4">创建 Yes/No 对话框</button>
+      <button @click="confirmation_dialog" class="mt-3 w-4">创建 Ok/Cancel 对话框</button>
+      <button @click="message_dialog" class="mt-3 w-4">创建 Message 对话框</button>
+      <button @click="open_file_dialog" class="mt-3 w-4">打开一个文件选择对话框</button>
+      <button @click="save_file_dialog" class="mt-3 w-4">保存到文件对话框</button>
+    </div>
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }
