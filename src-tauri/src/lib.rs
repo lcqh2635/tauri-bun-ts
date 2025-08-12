@@ -1,6 +1,7 @@
 use std::sync::Mutex;
 use tauri::Manager;
 use crate::commands::hello::greet;
+#[cfg(desktop)]
 use crate::core::desktop::tray::tray::create_system_tray;
 
 mod commands;
