@@ -1,2 +1,2 @@
-mod desktop;
-mod mobile;
+pub mod desktop;
+pub mod mobile;
