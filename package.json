@@ -10,15 +10,42 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "vue": "^3.5.13",
     "@tauri-apps/api": "^2",
-    "@tauri-apps/plugin-opener": "^2"
+    "@tauri-apps/plugin-opener": "^2",
+    "axios": "^1.11.0",
+    "echarts": "^6.0.0",
+    "figlet": "^1.8.2",
+    "gsap": "^3.13.0",
+    "lodash-es": "^4.17.21",
+    "nprogress": "^0.2.0",
+    "pinia": "^3.0.3",
+    "pinia-plugin-persistedstate": "^4.5.0",
+    "screenfull": "^6.0.2",
+    "vue": "^3.5.13",
+    "vue-echarts": "^7.0.3",
+    "vue-i18n": "^11.1.11",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.1.4",
+    "@intlify/unplugin-vue-i18n": "^6.0.8",
+    "@tauri-apps/cli": "^2",
+    "@types/bun": "^1.2.20",
+    "@types/figlet": "^1.7.0",
+    "@types/nprogress": "^0.2.3",
+    "@unocss/reset": "^66.4.2",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vitest/ui": "^3.2.4",
+    "postcss": "^8.5.6",
+    "postcss-preset-env": "^10.2.4",
+    "sass": "^1.90.0",
     "typescript": "~5.6.2",
+    "unocss": "^66.4.2",
+    "unplugin-auto-import": "^20.0.0",
+    "unplugin-icons": "^22.2.0",
+    "unplugin-vue-components": "^29.0.0",
     "vite": "^6.0.3",
-    "vue-tsc": "^2.1.10",
-    "@tauri-apps/cli": "^2"
+    "vitest": "^3.2.4",
+    "vue-tsc": "^2.1.10"
   }
 }
