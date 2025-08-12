@@ -22,6 +22,7 @@ const host = process.env.TAURI_DEV_HOST;
 // mode 参数的值为 development（开发环境）或 production（生产环境）。具体的传递值通过 --mode 选项指定，例如 vite --mode dev 那么 mode 的值为 dev。这意味着读取 .env.development 文件中的环境变量。
 /** @type {import('vite').UserConfig} */
 export default defineConfig(async ({ command, mode }) => {
+    // 执行一些异步操作
     // const data = await asyncFunction()
 
     console.log("执行的命令为: ", command);
