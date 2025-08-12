@@ -5,4 +5,9 @@
         <key>NSCameraUsageDescription</key>
         <string>Read QR codes</string>
     </dict>
+
+    <dict>
+        <key>NSFaceIDUsageDescription</key>
+        <string>Authenticate with biometric</string>
+    </dict>
 </plist>

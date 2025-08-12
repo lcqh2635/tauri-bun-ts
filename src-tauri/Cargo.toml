@@ -28,7 +28,8 @@ tauri = { version = "2", features = [ "tray-icon", "image-png", "unstable", "con
 
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-
+thiserror = "1.0.69"
+url = "2.5.4"
 
 # Tauri 常用插件使用请参考 https://v2.tauri.org.cn/plugin/
 
@@ -36,17 +37,17 @@ serde_json = "1"
 tauri-plugin-dialog = "2"
 tauri-plugin-os = "2"
 tauri-plugin-opener = "2"
-thiserror = "1.0.69"
-url = "2.5.4"
 
 # 仅适用于 Windows、macOS 和 Linux 桌面端插件
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-autostart = "2"
 tauri-plugin-updater = "2"
+tauri-plugin-window-state = "2"
 
 # 仅适用于 Android 和 iOS 移动端插件
 [target.'cfg(any(target_os = "android", target_os = "ios"))'.dependencies]
 tauri-plugin-barcode-scanner = "2"
+tauri-plugin-biometric = "2"
 
 
 # Tauri 应用程序大小， https://tauri.app/zh-cn/concept/size/
