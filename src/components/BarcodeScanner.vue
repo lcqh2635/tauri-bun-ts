@@ -1,6 +1,6 @@
 <!-- BarcodeScanner.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import {ref} from 'vue'
 import {
   scan,
   cancel,
@@ -44,7 +44,8 @@ const startScan = async () => {
 
   try {
     const scanned: Scanned = await scan({
-      windowed: true,   // 在当前页面显示摄像头（透明层）
+      // 在当前页面显示摄像头（透明层）如果设置为 false 则会打开一个原生级别的全屏相机界面进行扫码识别
+      windowed: false,
       cameraDirection: 'back',  // 可选 'front' 或 'back'
       // 扫码格式
       formats: [
@@ -61,6 +62,7 @@ const startScan = async () => {
     isScanning.value = false
   }
 }
+
 
 
 // 取消扫码（可选：提前中断）
