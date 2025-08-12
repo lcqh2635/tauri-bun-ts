@@ -3,8 +3,11 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "description": "A project built with Bun",
+  "author": "Your Name <you@example.com>",
+  "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "dev": "bun run vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri"
