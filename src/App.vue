@@ -109,6 +109,22 @@ onMounted(async () => {
   console.log('组件已挂载，DOM 可访问')
   await setup()
 })
+
+
+
+
+
+// 移动端扫码测试
+import { scan, Format } from '@tauri-apps/plugin-barcode-scanner';
+// 当使用 '“withGlobalTauri”： true' 时，您可以使用
+// const { scan, Format } = window.__TAURI__.barcodeScanner;
+
+const barcode_scanner = () => {
+  // 'windowed： true' 实际上将 WebView 设置为透明，而不是为相机打开单独的视图
+// 确保您的用户界面已准备好使用透明元素显示下面的内容
+  scan({ windowed: true, formats: [Format.QRCode] });
+}
+
 </script>
 
 <template>
@@ -140,6 +156,8 @@ onMounted(async () => {
       <button @click="message_dialog" class="mt-3 w-4">创建 Message 对话框</button>
       <button @click="open_file_dialog" class="mt-3 w-4">打开一个文件选择对话框</button>
       <button @click="save_file_dialog" class="mt-3 w-4">保存到文件对话框</button>
+
+      <button @click="barcode_scanner" class="mt-3 w-4">移动端扫码测试</button>
     </div>
   </main>
 </template>
