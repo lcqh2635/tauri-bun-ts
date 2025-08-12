@@ -14,8 +14,11 @@ val tauriProperties = Properties().apply {
     }
 }
 
-kotlin {
-    jvmToolchain(21) // 或 17, 21 等你想要的版本
+// 配置 Kotlin 编译器，参考 https://docs.gradle.org.cn/current/userguide/toolchains.html
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 android {
@@ -64,6 +67,9 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+    // 从 kotlinOptions {} 迁移到 compilerOptions {}
+    // 在 Kotlin 2.2.0 之前，您可以使用 kotlinOptions {} 块配置编译器选项。由于 Kotlin 2.0.0 已弃用 kotlinOptions {} 块，因此本部分提供了有关迁移构建脚本以改用 compilerOptions {} 块的指导和建议：
+    // https://kotlinlang.org/docs/gradle-compiler-options.html?utm_campaign=gradle-jvm-toolchain&utm_medium=kgp&utm_source=warnings#migrate-from-kotlinoptions-to-compileroptions
     kotlinOptions {
         jvmTarget = "21"
     }
