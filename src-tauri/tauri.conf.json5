@@ -91,10 +91,13 @@
         // {{target}}：操作系统名称（linux、windows 或 darwin 之一）。
         // {{arch}}：机器架构（x86_64、i686、aarch64 或 armv7 之一）。
         // {{current_version}}：请求更新的应用程序版本。
-        "https://github.com/lcqh2635/tauri-bun-ts/releases/{{target}}/{{arch}}/{{current_version}}",
-        // 或静态 github json 文件
-        // https://github.com/user/repo/releases/latest/download/latest.json"
+        // "https://github.com/lcqh2635/tauri-bun-ts/releases/{{target}}/{{arch}}/{{current_version}}",
         // https://github.com/lcqh2635/tauri-bun-ts/releases/download/v1.0.225/tabby-1.0.225-linux-x64.deb
+        // 或静态 github json 文件
+        // https://github.com/lcqh2635/tauri-bun-ts/releases/download/app-v0.1.0/latest.json
+        // https://github.com/{user}/{repo}/releases/download/{tag}/latest.json
+        // 关于 tag 的内容和格式，由 workflow-desktop.yml 中的 tagName 指定。我们可以自行修改称自己想要的
+        "https://github.com/lcqh2635/tauri-bun-ts/releases/download/app-v{{current_version}}/latest.json"
       ]
     }
   }
