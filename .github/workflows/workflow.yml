@@ -26,10 +26,16 @@ jobs:
       # 手动定义构建任务矩阵。
       matrix:
         include:
-          # 配置构建矩阵：仅包含一个目标 —— Universal macOS（支持 arm64 和 x86_64）
-          - platform: 'macos-latest'      # 使用最新的 macOS 虚拟机（GitHub Hosted Runner）。
-            # 告诉 cargo tauri build 构建 通用二进制（Universal），即同时支持 Apple Silicon（M1/M2）和 Intel Mac。
-            args: '--target universal-apple-darwin'
+            # 使用最新的 macOS 虚拟机（GitHub Hosted Runner）。
+          - platform: "macos-latest" # 适用于基于 Arm 的 Mac（M1 及更高版本）
+            # 告诉 cargo tauri build 构建适用于基于 Arm 的 Mac（Apple Silicon（M1/M2）及更高版本）
+            args: "--target aarch64-apple-darwin"
+          - platform: "macos-latest" # 适用于基于 Intel 的 Mac。
+            args: "--target x86_64-apple-darwin"
+          - platform: 'ubuntu-24.04'
+            args: ''
+          - platform: 'windows-latest'
+            args: ''
     # 指定运行此 Job 的虚拟机环境（从 matrix 中动态获取）
     runs-on: ${{ matrix.platform }}
     # 构建步骤列表
@@ -38,62 +44,43 @@ jobs:
       # 使用 GitHub 官方的 checkout 动作，将代码拉取到 CI 环境中。
       # 默认会递归检出子模块（Tauri 有时依赖 git 子模块）。
       - uses: actions/checkout@v4
-      # # 第二步：设置 Node.js 环境
+
+      # 第二步：设置 Node.js 环境
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*     # 安装最新的 LTS 版本 Node.js
+          cache: 'bun'     # 将其设置为 npm、yarn、pnpm 或 bun。
+
       # 第三步：安装 Rust 稳定版工具链
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
           # 为 macOS 平台安装两个目标架构的交叉编译支持
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-      # 第四步：安装前端依赖
+
+      # 第四步：安装 Tauri 在 Debian 系操作系统上的系统依赖
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-24.04' # 这必须与上面定义的平台值匹配。
+        run: |
+          sudo apt update
+          sudo apt install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+        # webkitgtk 4.0 适用于 Tauri v1 - webkitgtk 4.1 适用于 Tauri v2。
+        # 您可以删除不适用于您的应用程序的那个，以稍微加快工作流程。
+
+      # 第五步：安装前端依赖
       - name: install frontend dependencies
-        run: yarn install     # 根据您使用的选项，将其更改为 npm、pnpm 或 bun。
-      # 第五步：导入 Apple 开发者证书（用于代码签名）
-      - name: import Apple Developer Certificate
-        # 防止钥匙串自动锁定 3600 秒。
-        env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-        run: |
-          echo $APPLE_CERTIFICATE | base64 --decode > certificate.p12
-          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
-          security set-keychain-settings -t 3600 -u build.keychain
-          security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
-          security find-identity -v -p codesigning build.keychain
-      # 第六步：验证证书是否正确导入，并提取签名身份（Identity）
-      - name: verify certificate
-        run: |
-          CERT_INFO=$(security find-identity -v -p codesigning build.keychain | grep "Developer ID Application")
-          CERT_ID=$(echo "$CERT_INFO" | awk -F'"' '{print $2}')
-          echo "CERT_ID=$CERT_ID" >> $GITHUB_ENV
-          echo "Certificate imported."
-      # 第七步：使用 Tauri Action 构建、签名并发布应用
+        run: bun install     # 根据您使用的选项，将其更改为 npm、yarn、pnpm 或 bun。
+
+      # 第六步：使用 Tauri Action 构建、签名并发布应用
       - name: build and publish
         uses: tauri-apps/tauri-action@v0
         env:
           # GitHub Token（自动提供）
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Apple ID 登录信息（用于连接 App Store Connect，非必须）
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          # 证书信息（再次传递，确保安全）
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          # 从上一步获取的签名身份
-          APPLE_SIGNING_IDENTITY: ${{ env.CERT_ID }}
         with:
           #  发布的标签名：格式为 app-v1.0.0（自动替换 __VERSION__ 为 package.json 中的版本）
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          tagName: app-v__VERSION__ # 该作会自动将 \_\_VERSION\_\_ 替换为应用程序版本。
           # Release 显示名称
           releaseName: "App v__VERSION__"
           # Release 描述内容

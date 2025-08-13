@@ -1,4 +1,5 @@
 # .github/workflows/tauri.yml
+# 以下内容参考自 UpgradeLink 文档 https://www.toolsetlink.com/upgrade/example/tauri-action-example.html
 
 name: 'publish'
 
