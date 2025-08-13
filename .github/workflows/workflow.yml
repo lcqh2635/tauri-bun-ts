@@ -61,30 +61,25 @@ jobs:
           # 为 macOS 平台安装两个目标架构的交叉编译支持
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      # 第四步：安装 Node.js 环境
+      # 第四步：安装 Node.js 环境，参考官方文档 https://github.com/actions/setup-node
       - name: Install node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*     # 安装最新的 LTS 版本 Node.js
-          cache: 'bun'     # 将其设置为 npm、yarn、pnpm 或 bun。
           registry-url: 'https://registry.npmmirror.com'  # 配置 npm 镜像
 
-      # 安装 bun (如果你使用 bun)
+      # 安装并配置 bun (如果你使用 bun)，参考官方文档 https://github.com/oven-sh/setup-bun
       - name: Install bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
-      - name: configure bun registries
-        run: |
-          echo '[install]' > ~/.bunfig.toml
-          echo 'registry = "https://registry.npmmirror.com/"' >> ~/.bunfig.toml
+          registry-url: 'https://registry.npmmirror.com'
 
       # 第五步：安装前端依赖
       - name: install frontend dependencies
         run: bun install     # 根据您使用的选项，将其更改为 npm、yarn、pnpm 或 bun。
 
-      # 第六步：使用 Tauri Action 构建、签名并发布应用
+      # 第六步：使用 Tauri Action 构建、签名并发布应用。参考官方文档 https://github.com/tauri-apps/tauri-action
       - name: build and publish
         uses: tauri-apps/tauri-action@v0
         env:
