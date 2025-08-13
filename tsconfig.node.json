@@ -1,3 +1,6 @@
+// tsconfig.node.json: 用于编译 Node.js 环境下的配置文件和工具代码。
+// 处理构建工具和配置文件（如 vite.config.ts 和 src 应用源代码之外的内容 例如：plugins 目录文件）
+// plugins 目录中的 TypeScript 文件通常是 Vite 插件或其他构建工具，这些运行在 Node.js 环境中
 {
   "compilerOptions": {
     "composite": true,
@@ -6,6 +9,7 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
+  // 构建工具代码
   "include": [
     "vite.config.ts",
     "plugins/**/*.ts"

@@ -19,7 +19,7 @@ const permissionState = ref<PermissionState>('prompt')
 
 // 开始扫码
 const startScan = async () => {
-  // 1. 先检查权限
+  // 1. 先检查权限，查看用户之前是否用过该功能并已经授予了权限。
   let state = await checkPermissions()
 
   // 2. 如果被拒绝，提示用户去设置
@@ -29,9 +29,12 @@ const startScan = async () => {
     return
   }
 
+  // Android 系统不允许二次弹窗
+
   // 3. 如果是首次，请求权限
   if (state === 'prompt') {
     state = await requestPermissions()
+    console.log('权限状态:', state)
     if (state !== 'granted') {
       alert('权限未授权，无法使用摄像头')
       return
@@ -54,6 +57,9 @@ const startScan = async () => {
         Format.Code128,
         Format.UPC_A
       ]
+    }).then(result => {
+      // 操作扫码结果，一般来说，是一个链接
+
     })
     result.value = `格式: ${scanned.format}\n内容: ${scanned.content}`
   } catch (err) {
@@ -62,8 +68,6 @@ const startScan = async () => {
     isScanning.value = false
   }
 }
-
-
 
 // 取消扫码（可选：提前中断）
 const cancelScan = async () => {
