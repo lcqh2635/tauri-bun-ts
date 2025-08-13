@@ -1,8 +1,8 @@
-# 以下内容参考自 https://github.com/tauri-apps/tauri-action?tab=readme-ov-file#usage
+# 以下内容参考自 https://github.com/gradle/actions
 
 # 工作流名称：在 GitHub Actions 中显示为 "publish"
 # 说明：这是该 CI/CD 工作流的名称，会在 GitHub 的 Actions 标签页中显示。
-name: "publish"
+name: 'Publish Linux Arm builds'
 
 # 触发条件：当向名为 'release' 的分支推送代码时触发此工作流
 # 此工作流不会在 main 或其他分支触发。只有当你将代码推送到 release 分支时，才会自动执行构建和发布。推荐用于“预发布”或“正式发布”流程，避免频繁发布。
@@ -15,6 +15,7 @@ on:
 # 每次推送到 `release` 分支时，它会创建或更新一个 GitHub Release，
 # 构建你的应用，并将构建产物（artifacts）上传到该 Release。
 jobs:
+  # 现有的桌面构建任务...
   publish-tauri:
     # 给予此 Job 操作仓库内容的写权限（用于创建/更新 GitHub Release）
     permissions:
@@ -26,7 +27,7 @@ jobs:
       # 手动定义构建任务矩阵。
       matrix:
         include:
-            # 使用最新的 macOS 虚拟机（GitHub Hosted Runner）。
+          # 使用最新的 macOS 虚拟机（GitHub Hosted Runner）。
           - platform: "macos-latest" # 适用于基于 Arm 的 Mac（M1 及更高版本）
             # 告诉 cargo tauri build 构建适用于基于 Arm 的 Mac（Apple Silicon（M1/M2）及更高版本）
             args: "--target aarch64-apple-darwin"
@@ -85,6 +86,8 @@ jobs:
         env:
           # GitHub Token（自动提供）
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 将 bun tauri signer generate 生成的 tauri-key.pub (公钥)和tauri-key.key (私钥) 手动配置到 Github 上
+          # 需要自己手动配置，进入 GitHub 仓库的 Settings → Secrets and variables → Actions
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
@@ -100,3 +103,98 @@ jobs:
           prerelease: false
           # 构建参数（从 matrix 中传入）
           args: ${{ matrix.args }}
+
+  # 添加 Android 构建任务
+  publish-android:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # 安装 Android 环境
+      # 配置 Java，参考 https://github.com/actions/setup-java
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          # See 'Supported distributions' for available options
+          distribution: 'temurin'
+          java-version: 21
+      # 配置 Gradle，参考 https://github.com/gradle/actions
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      # 设置 Android SDK，参考 https://github.com/android-actions/setup-android
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      # 安装 Rust
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      # 安装 Node.js 和 bun
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: 'https://registry.npmmirror.com'
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # 安装依赖
+      - name: install frontend dependencies
+        run: bun install
+
+      # 构建 Android 应用
+      - name: Build Android app
+        run: |
+          cd src-tauri
+          bun tauri android build
+
+      # 上传构建产物
+      - name: Upload Android artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-app
+          path: src-tauri/gen/android/app/build/outputs/
+
+  # 添加 iOS 构建任务（仅在 macOS 上运行）
+  publish-ios:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # 安装 Rust
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      # 安装 Node.js 和 bun
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: 'https://registry.npmmirror.com'
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # 安装依赖
+      - name: install frontend dependencies
+        run: bun install
+
+      # 构建 iOS 应用
+      - name: Build iOS app
+        run: |
+          cd src-tauri
+          cargo tauri ios build
+
+      # 上传构建产物
+      - name: Upload iOS artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-app
+          path: src-tauri/gen/apple/
