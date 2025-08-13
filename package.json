@@ -22,7 +22,7 @@
     "preinstall": "npx only-allow bun",
     "postinstall": "echo '依赖包下载完成...'",
     "update": "bun update && cargo update --manifest-path src-tauri/Cargo.toml",
-    "docs:dev": "bun run --bun vitepress dev docs",
+    "docs:dev": "bun run --bun vitepress dev docs --open",
     "docs:build": "bun run --bun vitepress build docs",
     "docs:preview": "bun run --bun vitepress preview docs"
   },
