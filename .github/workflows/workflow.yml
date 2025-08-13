@@ -85,6 +85,8 @@ jobs:
         env:
           # GitHub Token（自动提供）
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           #  发布的标签名：格式为 app-v1.0.0（自动替换 __VERSION__ 为 package.json 中的版本）
           tagName: app-v__VERSION__ # 该作会自动将 \_\_VERSION\_\_ 替换为应用程序版本。
