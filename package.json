@@ -7,6 +7,7 @@
   "author": "Your Name <you@example.com>",
   "license": "MIT",
   "scripts": {
+    "comments": "// -b, --bun  强制脚本或包使用 Bun 的运行时而不是 Node.js",
     "dev": "bun run --bun vite --mode .env.development",
     "prod": "bun run --bun vite --mode .env.production",
     "test": "bun run --bun vitest --mode .env.test",

@@ -1,4 +1,4 @@
-#name: workflow.yml
+# 以下内容参考自 https://github.com/tauri-apps/tauri-action?tab=readme-ov-file#usage
 
 # 工作流名称：在 GitHub Actions 中显示为 "publish"
 # 说明：这是该 CI/CD 工作流的名称，会在 GitHub 的 Actions 标签页中显示。
@@ -45,12 +45,14 @@ jobs:
       # 默认会递归检出子模块（Tauri 有时依赖 git 子模块）。
       - uses: actions/checkout@v4
 
-      # 第二步：设置 Node.js 环境
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*     # 安装最新的 LTS 版本 Node.js
-          cache: 'bun'     # 将其设置为 npm、yarn、pnpm 或 bun。
+      # 第二步：安装 Tauri 在 Debian 系操作系统上的系统依赖
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-24.04' # 这必须与上面定义的平台值匹配。
+        run: |
+          sudo apt update
+          sudo apt install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+        # webkitgtk 4.0 适用于 Tauri v1 - webkitgtk 4.1 适用于 Tauri v2。
+        # 您可以删除不适用于您的应用程序的那个，以稍微加快工作流程。
 
       # 第三步：安装 Rust 稳定版工具链
       - name: install Rust stable
@@ -59,14 +61,24 @@ jobs:
           # 为 macOS 平台安装两个目标架构的交叉编译支持
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      # 第四步：安装 Tauri 在 Debian 系操作系统上的系统依赖
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-24.04' # 这必须与上面定义的平台值匹配。
+      # 第四步：安装 Node.js 环境
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*     # 安装最新的 LTS 版本 Node.js
+          cache: 'bun'     # 将其设置为 npm、yarn、pnpm 或 bun。
+          registry-url: 'https://registry.npmmirror.com'  # 配置 npm 镜像
+
+      # 安装 bun (如果你使用 bun)
+      - name: Install bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: configure bun registries
         run: |
-          sudo apt update
-          sudo apt install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
-        # webkitgtk 4.0 适用于 Tauri v1 - webkitgtk 4.1 适用于 Tauri v2。
-        # 您可以删除不适用于您的应用程序的那个，以稍微加快工作流程。
+          echo '[install]' > ~/.bunfig.toml
+          echo 'registry = "https://registry.npmmirror.com/"' >> ~/.bunfig.toml
 
       # 第五步：安装前端依赖
       - name: install frontend dependencies
