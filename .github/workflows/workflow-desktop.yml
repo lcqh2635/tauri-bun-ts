@@ -2,7 +2,7 @@
 
 # 工作流名称：在 GitHub Actions 中显示为 "publish"
 # 说明：这是该 CI/CD 工作流的名称，会在 GitHub 的 Actions 标签页中显示。
-name: workflow-mobile.yml
+name: workflow-desktop.yml
 
 # 触发条件：当向名为 'release' 的分支推送代码时触发此工作流
 # 此工作流不会在 main 或其他分支触发。只有当你将代码推送到 release 分支时，才会自动执行构建和发布。推荐用于“预发布”或“正式发布”流程，避免频繁发布。
@@ -35,7 +35,7 @@ jobs:
           - platform: 'ubuntu-24.04'
             args: ''
           - platform: 'windows-latest'
-            args: ''
+            args: '--no-bundle-msi'  # 只在 Windows 平台添加此参数
     # 指定运行此 Job 的虚拟机环境（从 matrix 中动态获取）
     runs-on: ${{ matrix.platform }}
     # 构建步骤列表
