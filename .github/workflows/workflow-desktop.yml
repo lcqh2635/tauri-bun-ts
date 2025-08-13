@@ -94,11 +94,41 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           #  发布的标签名：格式为 app-v1.0.0（自动替换 __VERSION__ 为 package.json 中的版本）
-          tagName: app-v__VERSION__ # 该作会自动将 \_\_VERSION\_\_ 替换为应用程序版本。
+          tagName: v__VERSION__ # 该作会自动将 \_\_VERSION\_\_ 替换为应用程序版本。
           # Release 显示名称
-          releaseName: "App v__VERSION__"
+          releaseName: "Tauri Bun TS v__VERSION__"
           # Release 描述内容
-          releaseBody: "See the assets to download this version and install."
+          releaseBody: |
+            # v0.1.0 - 初始发布
+  
+            ## 🚀 新特性
+            - **用户登录**：支持用户注册和登录功能
+            - **任务管理**：提供简单易用的任务管理界面
+  
+            ## 🐛 修复问题
+            - 修复了首次启动时的崩溃问题
+            - 优化了任务列表的加载速度
+  
+            ## 🎨 界面改进
+            - 重新设计了主界面布局，提升用户体验
+            - 添加了夜间模式支持
+  
+            ## 👩‍💻 开发者工具
+            - 使用 Tauri 构建跨平台应用
+            - 使用 Rust 作为后端逻辑语言
+  
+            ## 📦 下载
+            - [Windows 版本](https://github.com/yourusername/yourrepo/releases/download/v0.1.0/YourApp-v0.1.0.exe)
+            - [macOS 版本](https://github.com/yourusername/yourrepo/releases/download/v0.1.0/YourApp-v0.1.0.dmg)
+            - [Linux 版本](https://github.com/yourusername/yourrepo/releases/download/v0.1.0/YourApp-v0.1.0.AppImage)
+
+            ## 📸 截图预览
+            ![主界面](https://example.com/main-ui.png)
+            ![任务管理](https://example.com/task-manager.png)
+  
+            ## 🤝 贡献
+            欢迎提交 Issue 或 Pull Request！
+
           # 是否为草稿（建议设为 true，人工确认后再发布）
           releaseDraft: false
           # 是否为预发布版本
