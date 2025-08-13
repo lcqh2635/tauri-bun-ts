@@ -100,7 +100,7 @@ jobs:
           # Release 描述内容
           releaseBody: "See the assets to download this version and install."
           # 是否为草稿（建议设为 true，人工确认后再发布）
-          releaseDraft: true
+          releaseDraft: false
           # 是否为预发布版本
           prerelease: false
           # 构建参数（从 matrix 中传入）
