@@ -74,6 +74,12 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    // Windows 系统安装包配置，参考
+    "windows": {
+      "wix": {
+        "language": "zh-CN" // 语言修改成中文
+      }
+    }
   },
   // Tauri 插件配置，https://v2.tauri.org.cn/reference/config/#plugins
   "plugins": {

@@ -35,7 +35,7 @@ jobs:
           - platform: 'ubuntu-24.04'
             args: ''
           - platform: 'windows-latest'
-            args: '--no-bundle-msi'  # 只在 Windows 平台添加此参数
+            args: ''
     # 指定运行此 Job 的虚拟机环境（从 matrix 中动态获取）
     runs-on: ${{ matrix.platform }}
     # 构建步骤列表
