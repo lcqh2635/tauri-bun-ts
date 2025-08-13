@@ -135,3 +135,10 @@ jobs:
           prerelease: false
           # 构建参数（从 matrix 中传入）
           args: ${{ matrix.args }}
+
+
+# 使用与 Release 相同的名称
+# 在 release 仓库代码提交前必须先创建 tag 否则应用在 GitHub 仓库中只有 Releases 而 Tags 不会生成
+# git add . && git commit -m 'backup'
+# git tag v0.1.0
+# git push origin --tags
