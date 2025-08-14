@@ -67,7 +67,7 @@
     "@biomejs/biome": "^2.1.4",
     "@intlify/unplugin-vue-i18n": "^6.0.8",
     "@tauri-apps/cli": "^2",
-    "@types/bun": "^1.2.20",
+    "@types/bun": "latest",
     "@types/figlet": "^1.7.0",
     "@types/nprogress": "^0.2.3",
     "@unocss/reset": "^66.4.2",

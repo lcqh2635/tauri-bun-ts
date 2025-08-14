@@ -1,7 +1,7 @@
 // .vitepress/config/shared.ts
 import { defineConfig } from 'vitepress'
 
-// 站点共享配置
+// 站点共享配置，不随语言切换产生变化的配置内容
 // https://vitepress.dev/zh/reference/site-config
 export const shared = defineConfig({
     // 配置站点元数据  https://vitepress.dev/zh/reference/site-config#site-metadata
@@ -46,11 +46,12 @@ export const shared = defineConfig({
                 link: 'https://gitee.com/llf2635'
             }
         ],
-        // 搜索
+        // 搜索功能配置 参考 https://vitepress.dev/zh/reference/default-theme-search
         search: {
             provider: 'local',
         },
 
+        // 最后更新时间配置 https://vitepress.dev/zh/reference/default-theme-last-updated
         lastUpdated: {
             formatOptions: {
                 dateStyle: 'full',

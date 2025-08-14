@@ -1,11 +1,26 @@
-// .vitepress/config/zh.ts
+// .vitepress/config/en-US.ts
 import { defineConfig } from 'vitepress'
 import pkg from '../../../package.json'
 
+// 站点配置可以定义站点的全局设置 https://vitepress.dev/zh/reference/site-config
 export const enUS = defineConfig({
-    lang: 'en-US',
+    // 站点元数据 https://vitepress.dev/zh/reference/site-config#site-metadata
+    // 国际化，参考 https://vitepress.dev/zh/reference/default-theme-config#i18nrouting
+    lang: 'en',  // 可选，将作为 `lang` 属性添加到 `html` 标签中
+    title: 'VitePress 英文',  // 站点的标题。使用默认主题时，这将显示在导航栏中
     description: '文档描述',
+
     themeConfig: {
+        // https://vitepress.dev/zh/reference/default-theme-config
+
+        // 站点图标，参考 https://vitepress.dev/zh/reference/default-theme-config#logo
+        logo: '/vite.svg',
+
+        // 搜索配置,参考 https://vitepress.dev/zh/reference/default-theme-search
+        search: {
+            provider: 'local'
+        },
+
         // 配置首页头部导航菜单，参考 https://vitepress.dev/zh/reference/default-theme-nav
         nav: [
             {text: 'Guide', link: '/en/guide/what-is-vitepress', activeMatch: '/en/guide/'},

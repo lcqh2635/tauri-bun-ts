@@ -6,7 +6,7 @@ layout: home
 
 # 当 layout 设置为 home 时，定义主页 hero 部分的内容。
 hero:
-  name: "VitePress"
+  name: "VitePress 中文"
   text: "由 Vite 和 Vue 驱动的静态站点生成器"
   tagline: 将 Markdown 变成优雅的文档，只需几分钟
   # text 和 tagline 区域旁的图片

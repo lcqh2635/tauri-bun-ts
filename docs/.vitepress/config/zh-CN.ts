@@ -1,11 +1,17 @@
-// .vitepress/config/zh.ts
+// .vitepress/config/zh-CN.ts
 import { defineConfig } from 'vitepress'
 import pkg from '../../../package.json'
 
+// 站点配置可以定义站点的全局设置 https://vitepress.dev/zh/reference/site-config
 export const zhCN = defineConfig({
-    lang: 'zh-CN',
+    // 站点元数据 https://vitepress.dev/zh/reference/site-config#site-metadata
+    // 国际化，参考 https://vitepress.dev/zh/reference/default-theme-config#i18nrouting
+    lang: 'zh-CN',  // 可选，将作为 `lang` 属性添加到 `html` 标签中
+    title: 'VitePress 中文',  // 站点的标题。使用默认主题时，这将显示在导航栏中
     description: '文档描述',
+
     themeConfig: {
+        // Nav 是显示在页面顶部的导航栏。它包含站点标题、全局菜单链接等。
         // 配置首页头部导航菜单，参考 https://vitepress.dev/zh/reference/default-theme-nav
         nav: [
             {text: '指南', link: '/guide/what-is-vitepress'},
@@ -128,8 +134,9 @@ export const zhCN = defineConfig({
             pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path',
             text: '在 GitHub 上编辑此页面'
         },
+        // 补充 shared.ts 中的 lastUpdated 配置
         lastUpdated: {
-            text: "最后更新",
+            text: "最后更新于",
         },
         docFooter: {
             prev: "上一页",

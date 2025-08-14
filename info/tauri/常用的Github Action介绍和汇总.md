@@ -28,6 +28,12 @@ https://github.com/gradle/actions
 # Tauri 环境搭建
 https://github.com/tauri-apps/tauri-action
 
+# 使用 GitHub Actions 自动将项目部署到 GitHub Pages。可以将此作配置为将生产就绪代码推送到所需的任何分支中。
+https://github.com/JamesIves/github-pages-deploy-action
+
+# Auto Deploy Gitee Pages by GitHub Action | 无须人为干预，由 GitHub Action 自动部署 Gitee Pages 
+https://github.com/yanglbme/gitee-pages-action
+
 
 # 邮件发送 GitHub Action
 https://github.com/dawidd6/action-send-mail
