@@ -19,15 +19,16 @@ export const shared = defineConfig({
     cleanUrls: true,
     // 元数据分块
     metaChunk: true,
-    // 头部信息
+    // 头部信息，https://vitepress.dev/zh/reference/site-config#head
     head: [
+        // svg 转 ico 工具站 https://free-for-dev.com/tools/image/svg-to-ico
         ['link', { rel: 'icon', href: '/favicon.ico' }],
-        ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }],
-        ['meta', { property: 'og:type', content: 'website' }],
-        ['meta', { property: 'og:locale', content: 'en' }],
-        ['meta', { property: 'og:title', content: '文档标题' }],
-        ['meta', { property: 'og:site_name', content: '文档标题' }],
-        ['meta', { property: 'og:image', content: '/logo.png' }],
+        // ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }],
+        // ['meta', { property: 'og:type', content: 'website' }],
+        // ['meta', { property: 'og:locale', content: 'en' }],
+        // ['meta', { property: 'og:title', content: '文档标题' }],
+        // ['meta', { property: 'og:site_name', content: '文档标题' }],
+        // ['meta', { property: 'og:image', content: '/logo.png' }],
     ],
     // 主题配置
     // https://vitepress.dev/zh/reference/default-theme-config
