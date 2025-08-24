@@ -1,0 +1,39 @@
+# 集群部署样例,数据目录: ./data
+version: '3.8'
+
+services:
+  # 使用基于 Rust 实现的 Nacos Server
+  # r-nacos 官方文档 https://github.com/nacos-group/r-nacos
+  nacos:
+    image: qingpan/rnacos:stable
+    container_name: nacos
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "10848:10848"
+    volumes:
+      - ./data:/io:rw
+    environment:
+      - RNACOS_INIT_ADMIN_USERNAME=admin
+      - RNACOS_INIT_ADMIN_PASSWORD=admin
+      - RNACOS_HTTP_PORT=8848
+    restart: always
+
+  higress:
+    image: higress-registry.cn-hangzhou.cr.aliyuncs.com/higress/all-in-one:latest
+    container_name: higress-ai
+    ports:
+      - "8001:8001"
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      - ./data:/io:rw
+      - ./config/higress:/etc/higress:ro
+      - ./config/certs:/etc/certs:ro
+    environment:
+      - HIGRESS_CONFIG_PATH=/etc/higress/higress.yaml
+      - HIGRESS_CERT_PATH=/etc/certs
+      - HIGRESS_CERT_KEY_PATH=/etc/certs/tls.key
+      - HIGRESS_CERT_CERT_PATH=/etc/certs/tls.crt
+      - HIGRESS_CERT_CA_PATH=/etc/certs/ca.crt
+      - HIGRESS_CERT_CA_KEY_PATH=/etc/certs/ca.key
